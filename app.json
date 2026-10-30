@@ -1,0 +1,19 @@
+{
+  "assets": [
+    "node_modules/@duckdb/duckdb-wasm/dist/duckdb-browser-mvp.worker.js"
+  ],
+  "patches": [
+    {
+      "path": "node_modules/@perspective-dev/viewer/dist/esm/perspective-viewer.js",
+      "sha256": "c32d9461fd2fc0dac17a70195420e62e848491931278985b022efe72aa94d49e",
+      "find": "e===void 0?import(n):e",
+      "replace": "e===void 0?Promise.reject(new Error(\"Viewer module must be supplied\")):e"
+    },
+    {
+      "path": "node_modules/@perspective-dev/viewer-charts/dist/esm/perspective-viewer-charts.js",
+      "sha256": "10fb293bed8fa37753a8dc905b10b12e4286533dc8c8f25519b40ce4f5de0130",
+      "find": "import(e)",
+      "replace": "Promise.reject(new Error(\"Chart rendering requires worker graphics support\"))"
+    }
+  ]
+}
