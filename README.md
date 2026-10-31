@@ -36,3 +36,5 @@ module. Chart fallback that would dynamically import a blob is disabled; the
 worker graphics path is used. Run `npm ci --prefix apps/system/data-explorer
 --ignore-scripts` before building. Third-party licenses are packaged with the
 built app; dependencies and generated assets are not committed.
+
+When My files detects that the open source CSV has changed, has conflicting copies, or is unavailable, Data Explorer shows a persistent notice. The current analysis continues to use the data loaded earlier; reopen the source to analyze its current contents. Detection depends on the account mirror checking the server, so it is not an instantaneous server notification.

@@ -4,3 +4,4 @@
 
 .data-explorer-options{background:white;border:1px solid #d9dfe5;padding:.4rem}.data-explorer-options summary{cursor:pointer;min-height:36px;display:list-item}.data-explorer-options .data-explorer-save{margin:.4rem 0}
 .data-explorer-note{margin:0;font-size:12px;line-height:1.35;color:#526078}
+.data-explorer-source-warning{margin:0;padding:8px;border-left:4px solid #a36300;background:#fff4d6;color:#513400}
