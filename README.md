@@ -8,16 +8,27 @@ then use the viewer settings to filter, group, pivot or choose a chart. Choose
 a save folder and select **Save results CSV** to save the SQL result to My files;
 the result is written to browser storage first and then synchronized.
 
-This first version opens CSV files up to 32 MiB. The source stays in the
-account's browser/server file mirror; the database, queries and visualization
-settings are temporary and are not saved when the window closes. Saved CSVs
-contain the SQL result, not a chart or the viewer's additional filters and pivots.
-It does not yet open DuckDB database files. Extension auto-install/loading
-is disabled so SQL won't download DuckDB extensions. DuckDB and Perspective
-assets load only when the app is opened; the first load is roughly 44 MiB.
-Charts require browser worker graphics support. The upstream virtual-server
-client currently logs an unhandled unsubscribe request while closing the viewer;
-this has not prevented disposal in the browser test.
+**Save analysis** writes a `.codi-data.json` project to My files. It stores the
+SQL and Perspective settings plus the source CSV path and content hash; the CSV
+is a separate file and must remain available. Open the project from Files or the
+app to restore the query and chart. If its source has changed, the app asks
+before using the current CSV; if the source is missing, restore it in My files
+before opening the project. Unsaved SQL and viewer-setting changes prompt before
+closing or opening another file. Run the current SQL before saving the project.
+The save-location controls and **Save results CSV** are under **Save locations
+and CSV export**. Results CSV contains the SQL result, not a chart or the
+viewer's additional filters and pivots.
+
+CSV input and results may be up to 128 MiB, but DuckDB and Perspective need
+additional working memory; large datasets may fail on memory-constrained
+devices. A local test opened and queried a CSV larger than 32 MiB; the full
+128 MiB limit has not been verified in this app. It does not open DuckDB
+database files. Extension auto-install/loading is disabled so SQL won't
+download DuckDB extensions. DuckDB and Perspective assets load only when the
+app opens; the first load is roughly 44 MiB. Charts require browser worker
+graphics support. The upstream virtual-server client currently logs an
+unhandled unsubscribe request while closing the viewer; this has not prevented
+disposal in the browser test.
 
 The two exact-hash build patches prevent dynamic imports from outside the
 reviewed app bundle. Viewer initialization explicitly supplies its bundled WASM

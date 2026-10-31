@@ -1,3 +1,6 @@
 .data-explorer{display:flex;flex-direction:column;gap:.5rem;min-height:0;height:100%;padding:.5rem}.data-explorer-bar{display:flex;gap:.35rem;flex-wrap:wrap}.data-explorer-bar input{flex:1;min-width:10rem}.data-explorer-sql{min-height:3.4rem;resize:vertical;width:100%;font:inherit}.data-explorer perspective-viewer{display:block;flex:1;min-height:12rem;width:100%}
 
 .data-explorer-save{display:flex;gap:.35rem;flex-wrap:wrap}.data-explorer-save input{flex:1;min-width:10rem}.data-explorer-bar button,.data-explorer-save button{min-height:44px;padding:.45rem .7rem}
+
+.data-explorer-options{background:white;border:1px solid #d9dfe5;padding:.4rem}.data-explorer-options summary{cursor:pointer;min-height:36px;display:list-item}.data-explorer-options .data-explorer-save{margin:.4rem 0}
+.data-explorer-note{margin:0;font-size:12px;line-height:1.35;color:#526078}
