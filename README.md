@@ -14,7 +14,7 @@ is a separate file and must remain available. Open the project from Files or the
 app to restore the query and chart. If its source has changed, the app asks
 before using the current CSV; if the source is missing, restore it in My files
 before opening the project. Unsaved SQL and viewer-setting changes prompt before
-closing or opening another file. Run the current SQL before saving the project.
+closing or opening another file. Run the current SQL before saving the project. Save checks the source hash and existing destination version using My files metadata without rereading their contents.
 The save-location controls and **Save results CSV** are under **Save locations
 and CSV export**. Results CSV contains the SQL result, not a chart or the
 viewer's additional filters and pivots.
