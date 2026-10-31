@@ -42,3 +42,5 @@ When My files detects that the open source CSV has changed, has conflicting copi
 Project and results saves use the destination entered when Save was selected, even if the path is edited while the save is in progress.
 
 Editing SQL marks the displayed results as belonging to an earlier query. Run the current SQL before saving results; if SQL changes during an export, the saved CSV is identified as an earlier result. An immediate conflicting-copy result is reported for resolution in Files.
+
+**Create example CSV** creates `/Example-resistance.csv` in My files and opens it. The values are synthetic, not laboratory measurements. Open **Example: calculate resistance** and choose **Use example query**, then **Run SQL**; the example yields 1,000 ohms by converting milliamps to amps. An existing file with that name is not replaced. If the current analysis changes while the file is being created, it stays open and the example can be opened later.
