@@ -1,1 +1,3 @@
 .data-explorer{display:flex;flex-direction:column;gap:.5rem;min-height:0;height:100%;padding:.5rem}.data-explorer-bar{display:flex;gap:.35rem;flex-wrap:wrap}.data-explorer-bar input{flex:1;min-width:10rem}.data-explorer-sql{min-height:3.4rem;resize:vertical;width:100%;font:inherit}.data-explorer perspective-viewer{display:block;flex:1;min-height:12rem;width:100%}
+
+.data-explorer-save{display:flex;gap:.35rem;flex-wrap:wrap}.data-explorer-save input{flex:1;min-width:10rem}.data-explorer-bar button,.data-explorer-save button{min-height:44px;padding:.45rem .7rem}
