@@ -102,3 +102,13 @@ also prevents a late result from opening anything. Local desktop and
 emulated-phone account tests cover the chooser ordering, saving an analysis,
 server synchronization and fresh-session reopening. Physical touch is not
 verified by those tests.
+
+If opening data fails and the previous view cannot be restored, the app reports
+the failure and requires reopening the source before running SQL or saving an
+analysis or results; it does not treat the uncertain view as a valid result.
+Local desktop and emulated-phone account tests injected failures in both the
+candidate and restore operations, then reopened the source and synced results.
+The tests observed a Perspective `_setThrew is not defined` page error during
+injected failures. An existing query-restore test produced the same page error
+on an unchanged baseline as well as the candidate; its final no-page-error
+assertion remains unresolved. Physical touch remains unverified.
