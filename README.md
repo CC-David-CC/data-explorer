@@ -37,6 +37,17 @@ worker graphics path is used. Run `npm ci --prefix apps/system/data-explorer
 --ignore-scripts` before building. Third-party licenses are packaged with the
 built app; dependencies and generated assets are not committed.
 
+For a fresh checkout, install the shared app-builder and test dependencies with
+`npm ci --prefix active-system/tools/app-builder --ignore-scripts` and
+`npm ci --prefix tests --ignore-scripts`, then install this app's dependencies
+using the command above. Build it with
+`python3 active-system/scripts/build-public-apps.py --apps data-explorer --output .build/data-explorer-test`.
+The pinned packages supply DuckDB, Perspective, their workers and WebAssembly;
+they are not separate files an app author must hand-copy into the checkout.
+For an account-backed local preview, create `.venv` and install
+`active-system/requirements.lock`, then run
+`.venv/bin/python active-system/scripts/run-simplified-local.py --port 18310 --isolated --apps-bundle .build/data-explorer-test`.
+
 When My files detects that the open source CSV has changed, has conflicting copies, or is unavailable, Data Explorer shows a persistent notice. The current analysis continues to use the data loaded earlier; reopen the source to analyze its current contents. Detection depends on the account mirror checking the server, so it is not an instantaneous server notification.
 
 The saved analysis project has its own persistent notice when the mirror finds
