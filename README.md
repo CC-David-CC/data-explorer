@@ -91,5 +91,5 @@ security sandbox.
 
 Local desktop and emulated-phone tests cover TSV selection, quoted tabs and
 commas, DuckDB SQL, a synced analysis project, fresh-session reopen, and a
-changed-source notice. Files opens TSV files with its existing association;
-choose them inside Data Explorer. Physical touch is not verified.
+changed-source notice. Files opens CSV and TSV files in Data Explorer; desktop
+and emulated-phone checks cover the TSV handoff. Physical touch is not verified.
