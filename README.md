@@ -120,3 +120,10 @@ exports. The earlier `_setThrew is not defined` error was reproduced on the
 unchanged worker. Local desktop and emulated-phone failed-query/restore tests
 pass with the patch without page errors. This does not prove all worker error
 or memory conditions have been tested.
+
+Only one project or results folder picker can be open at once. Open and save
+operations are unavailable until it closes. If the destination path changes while the
+picker is open, the new path is preserved and you can choose the folder again;
+closing the app discards a late picker result. Local desktop and phone-sized
+account tests cover these cases and project/CSV save, sync and fresh reopen;
+physical touch has not been verified.
