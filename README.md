@@ -129,3 +129,12 @@ account tests cover these cases and project/CSV save, sync and fresh reopen;
 physical touch has not been verified.
 
 A temporary account-storage read error or conflict during window restoration retains the saved analysis or data reference and offers **Retry saved analysis or data**. Retry asks before replacing unsaved SQL edits; cancel leaves both the edits and retry option intact. Successfully opening another data file clears the recovery target. Local registered-account desktop and emulated-phone tests covered an injected project-read failure, cancellation, retry, real SQL, saving and server sync. Physical touch, conflict retries and all storage failure modes remain unverified.
+
+In **Example: calculate resistance**, **Plot example data** runs a second
+query and displays the synthetic measurements as bars grouped by current
+(mA), with voltage (V) as the bar height. It replaces the current SQL and
+chart settings; when the analysis has unsaved changes, a desktop confirmation
+lets you keep them. Save the analysis to retain the chart and query together.
+Local registered-account desktop and emulated-phone checks cover the chart,
+confirmation cancellation, server sync and fresh-session project reopening.
+Actual touch and physical measurements remain unverified.
