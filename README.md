@@ -3,16 +3,16 @@
 Perspective supplies the interactive data grid, grouping/pivot controls and
 charts. Its DuckDB virtual-server adapter runs SQL against DuckDB-Wasm in the
 browser; there is no separate database server. Choose **Open from My files**, or
-enter a CSV path and select Open path. Run a SELECT query to show its results,
+enter a CSV or TSV path and select Open path. TSV files use tab delimiters; quoted fields may contain tabs or commas. Run a SELECT query to show its results,
 then use the viewer settings to filter, group, pivot or choose a chart. Choose
 a save folder and select **Save results CSV** to save the SQL result to My files;
 the result is written to browser storage first and then synchronized.
 
 **Save analysis** writes a `.codi-data.json` project to My files. It stores the
-SQL and Perspective settings plus the source CSV path and content hash; the CSV
-is a separate file and must remain available. Open the project from Files or the
+SQL and Perspective settings plus the source CSV or TSV path and content hash; the
+source is a separate file and must remain available. Open the project from Files or the
 app to restore the query and chart. If its source has changed, the app asks
-before using the current CSV; if the source is missing, restore it in My files
+before using the current source file; if the source is missing, restore it in My files
 before opening the project. Unsaved SQL and viewer-setting changes prompt before
 closing or opening another file. Run the current SQL before saving the project. Save checks the source hash and existing destination version using My files metadata without rereading their contents.
 The save-location controls and **Save results CSV** are under **Save locations
@@ -88,3 +88,8 @@ and semicolons inside quoted strings, quoted identifiers or comments are
 accepted. Result-table creation also uses a DuckDB prepared statement. These
 checks prevent the tested multi-statement mistake; they are not a general SQL
 security sandbox.
+
+Local desktop and emulated-phone tests cover TSV selection, quoted tabs and
+commas, DuckDB SQL, a synced analysis project, fresh-session reopen, and a
+changed-source notice. Files opens TSV files with its existing association;
+choose them inside Data Explorer. Physical touch is not verified.
