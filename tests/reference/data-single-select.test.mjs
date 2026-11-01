@@ -1,0 +1,4 @@
+import assert from 'node:assert/strict';import {singleSelect} from '../apps/system/data-explorer/sql-statement.mjs';
+for(const sql of ["SELECT 'a;b' AS x",'SELECT "a;b" FROM data',"SELECT 'it''s;ok' AS x",String.raw`SELECT E'it\'s;ok' AS x`,'SELECT $$a;b$$ AS x','SELECT $tag$a;b$tag$ AS x','SELECT 1 -- ; comment','SELECT 1 /* ; /* nested ; */ end */','SELECT 1; -- trailing ; comment','SELECT 1; /* trailing ; comment */'])assert.doesNotThrow(()=>singleSelect(sql),sql);
+for(const sql of ['SELECT 1; DELETE FROM data','SELECT 1); DELETE FROM data; --','SELECT 1; /* ; */ DELETE FROM data','SELECT 1;;','SELECT 1 /* unclosed',"SELECT 'unclosed",'SELECT $$unclosed'])assert.throws(()=>singleSelect(sql),undefined,sql);
+assert.equal(singleSelect('SELECT 1; -- end'), 'SELECT 1 -- end');console.log('PASS single SELECT lexical boundaries and quoted/comment semicolons');
