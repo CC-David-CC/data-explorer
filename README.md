@@ -19,10 +19,12 @@ visualizations can still round; retain the original text column when exact
 digits matter. CSV parsing still interprets delimiters, quotes, headers and
 nulls, so text mode is not a byte-for-byte file copy.
 
-Saved text-mode analyses use `codi-data-project/2` and reopen in text mode;
-older clients that only support version 1 reject them instead of silently
-changing their interpretation. Existing version 1 projects retain inferred
-types. Local registered-account desktop and emulated-phone tests cover CSV
+New text-mode imports keep a quoted empty field (`""`) as an empty string and
+an unquoted empty field as SQL NULL. This is a parsing convention; other CSV
+producers may use empty fields differently. Saved analyses of these new imports
+use `codi-data-project/3`. Version 2 projects continue treating both forms as
+NULL, including when saved again; version 1 projects retain inferred types.
+Older clients reject version 3 rather than silently changing its interpretation. Local registered-account desktop and emulated-phone tests cover CSV
 and TSV identifiers beyond JavaScript's exact integer range, long decimal text,
 an explicit SQL cast, results export, server sync and fresh-session project
 reopen. Physical touch, arbitrary CSV parsing cases and exact numeric chart
@@ -173,3 +175,10 @@ try again. Local registered-account desktop and emulated-phone tests covered
 cancellation, edits during confirmation, the real 1,000 Ω result, server sync
 and reopening the analysis in a fresh browser session. Physical touch remains
 unverified.
+
+Local registered-account desktop and emulated-phone CSV and TSV tests covered
+quoted empty versus unquoted NULL, quoted delimiters, escaped quotes, multiline
+text and large numeric identifiers; exported CSV was checked and reimported.
+Version 3 analyses retained their interpretation after sync and fresh reopen,
+and version 2 retained its original interpretation after reopening and saving.
+These tests do not cover every CSV dialect or physical-phone interaction.
