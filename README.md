@@ -94,7 +94,7 @@ commas, DuckDB SQL, a synced analysis project, fresh-session reopen, and a
 changed-source notice. Files opens CSV and TSV files in Data Explorer; desktop
 and emulated-phone checks cover the TSV handoff. Physical touch is not verified.
 
-If the file used to restore a window is missing or invalid, the failed association is cleared. The original file is untouched; open another data file or create the example, then save a new analysis. Local desktop/phone and live emulated-phone account tests cover fallback, example, sync and refresh.
+If the file used to restore a window is missing or invalid, the failed association is cleared. The original file is untouched; open another data file or create the example, then save a new analysis. A saved project with a missing source retains its restore reference so it can be retried after the source is restored. Local desktop/phone and live emulated-phone account tests cover fallback, example, sync and refresh.
 
 Only one My files chooser can be active in a window. If another open action
 supersedes a delayed chooser, its old result is ignored; closing the window
@@ -127,3 +127,5 @@ picker is open, the new path is preserved and you can choose the folder again;
 closing the app discards a late picker result. Local desktop and phone-sized
 account tests cover these cases and project/CSV save, sync and fresh reopen;
 physical touch has not been verified.
+
+A temporary account-storage read error or conflict during window restoration retains the saved analysis or data reference and offers **Retry saved analysis or data**. Retry asks before replacing unsaved SQL edits; cancel leaves both the edits and retry option intact. Successfully opening another data file clears the recovery target. Local registered-account desktop and emulated-phone tests covered an injected project-read failure, cancellation, retry, real SQL, saving and server sync. Physical touch, conflict retries and all storage failure modes remain unverified.
