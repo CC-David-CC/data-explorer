@@ -182,3 +182,19 @@ text and large numeric identifiers; exported CSV was checked and reimported.
 Version 3 analyses retained their interpretation after sync and fresh reopen,
 and version 2 retained its original interpretation after reopening and saving.
 These tests do not cover every CSV dialect or physical-phone interaction.
+
+The **First row** control chooses automatic header detection, column names, or
+data with no header. Choose the interpretation before opening the CSV or TSV;
+changing the control does not change an already-open analysis. Automatic
+header detection can treat the first row of a headerless text file as column
+names, so choose **Data (no header)** when appropriate. The example dataset
+selects column names and inferred types so its example SQL works.
+
+Analyses with an explicit first-row choice use `codi-data-project/4` and store
+the choice together with the selected type and quoted-empty settings. Existing
+version 1–3 projects retain automatic header detection and their original type
+and null interpretation; older clients reject version 4. Local registered-account
+desktop and emulated-phone CSV and TSV tests covered headerless and named-header
+files, queries, CSV export, server sync and fresh-session project reopening.
+Automatic detection remains heuristic, physical touch and other CSV dialects
+remain unverified.
