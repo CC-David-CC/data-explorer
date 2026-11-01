@@ -39,6 +39,11 @@ built app; dependencies and generated assets are not committed.
 
 When My files detects that the open source CSV has changed, has conflicting copies, or is unavailable, Data Explorer shows a persistent notice. The current analysis continues to use the data loaded earlier; reopen the source to analyze its current contents. Detection depends on the account mirror checking the server, so it is not an instantaneous server notification.
 
+The saved analysis project has its own persistent notice when the mirror finds
+that it has changed, been deleted, become unavailable, or has conflicting copies.
+Your current analysis remains open; save a copy, reopen it, or resolve conflicts
+in Files. A conflict returned by a project save is also reported immediately.
+
 Project and results saves use the destination entered when Save was selected, even if the path is edited while the save is in progress.
 
 Desktop dialogs confirm discarding settings, replacing files and opening a
