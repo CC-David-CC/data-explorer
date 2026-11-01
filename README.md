@@ -75,3 +75,10 @@ failure and the existing phone-sized account workflow passed locally; other
 startup failure points remain unverified.
 
 **Create example CSV** creates `/Example-resistance.csv` in My files and opens it. The values are synthetic, not laboratory measurements. Open **Example: calculate resistance** and choose **Use example query**, then **Run SQL**; the example yields 1,000 ohms by converting milliamps to amps. An existing file with that name is not replaced. If the current analysis changes while the file is being created, it stays open and the example can be opened later.
+
+Closing during an analysis-project save or results CSV export asks for
+confirmation, including when the analysis was previously clean. A write
+already sent to storage may still finish after closing.
+
+Chart and viewer-setting changes made while a project save or CSV export is
+in progress remain marked unsaved. Save the analysis again to keep them.
