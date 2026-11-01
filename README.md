@@ -93,3 +93,5 @@ Local desktop and emulated-phone tests cover TSV selection, quoted tabs and
 commas, DuckDB SQL, a synced analysis project, fresh-session reopen, and a
 changed-source notice. Files opens CSV and TSV files in Data Explorer; desktop
 and emulated-phone checks cover the TSV handoff. Physical touch is not verified.
+
+If the file used to restore a window is missing or invalid, the failed association is cleared. The original file is untouched; open another data file or create the example, then save a new analysis. Local desktop/phone and live emulated-phone account tests cover fallback, example, sync and refresh.
