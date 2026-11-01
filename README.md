@@ -8,6 +8,26 @@ then use the viewer settings to filter, group, pivot or choose a chart. Choose
 a save folder and select **Save results CSV** to save the SQL result to My files;
 the result is written to browser storage first and then synchronized.
 
+By default, DuckDB infers column types for numerical analysis. Inference or the
+viewer and charts can round large integers and precise decimals; do not use the
+display as proof of exact digits. Before opening a CSV or TSV, select **Read all
+CSV/TSV columns as text** to keep numeric-looking identifiers and values as
+text. Reopen the source after changing this selection; it does not change the
+currently loaded analysis. For arithmetic in text mode, use an explicit SQL
+`CAST`, for example `CAST(reading AS DECIMAL(30,18))`. Numeric calculations and
+visualizations can still round; retain the original text column when exact
+digits matter. CSV parsing still interprets delimiters, quotes, headers and
+nulls, so text mode is not a byte-for-byte file copy.
+
+Saved text-mode analyses use `codi-data-project/2` and reopen in text mode;
+older clients that only support version 1 reject them instead of silently
+changing their interpretation. Existing version 1 projects retain inferred
+types. Local registered-account desktop and emulated-phone tests cover CSV
+and TSV identifiers beyond JavaScript's exact integer range, long decimal text,
+an explicit SQL cast, results export, server sync and fresh-session project
+reopen. Physical touch, arbitrary CSV parsing cases and exact numeric chart
+rendering remain unverified.
+
 **Save analysis** writes a `.codi-data.json` project to My files. It stores the
 SQL and Perspective settings plus the source CSV or TSV path and content hash; the
 source is a separate file and must remain available. Open the project from Files or the
