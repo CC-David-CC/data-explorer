@@ -1,7 +1,5 @@
 {
-  "assets": [
-    "node_modules/@duckdb/duckdb-wasm/dist/duckdb-browser-mvp.worker.js"
-  ],
+  "assets": [],
   "patches": [
     {
       "path": "node_modules/@perspective-dev/viewer/dist/esm/perspective-viewer.js",
@@ -14,6 +12,15 @@
       "sha256": "10fb293bed8fa37753a8dc905b10b12e4286533dc8c8f25519b40ce4f5de0130",
       "find": "import(e)",
       "replace": "Promise.reject(new Error(\"Chart rendering requires worker graphics support\"))"
+    },
+    {
+      "path": "node_modules/@duckdb/duckdb-wasm/dist/duckdb-browser-mvp.worker.js",
+      "sha256": "b0387027f174e2b60c2d5cfa31cecca9b89d8a9762346b6449a784cd1c4dde3c",
+      "find": "stackRestore=e=>__emscripten_stack_restore(e),createInvokeFunction=",
+      "replace": "stackRestore=e=>__emscripten_stack_restore(e),_setThrew=(...a)=>wasmExports.setThrew(...a),___cxa_can_catch=(...a)=>wasmExports.__cxa_can_catch(...a),___cxa_decrement_exception_refcount=(...a)=>wasmExports.__cxa_decrement_exception_refcount(...a),___cxa_increment_exception_refcount=(...a)=>wasmExports.__cxa_increment_exception_refcount(...a),___cxa_demangle=(...a)=>wasmExports.__cxa_demangle(...a),___cxa_get_exception_ptr=(...a)=>wasmExports.__cxa_get_exception_ptr(...a),createInvokeFunction="
     }
-  ]
+  ],
+  "workers": {
+    "duckdb-worker": "node_modules/@duckdb/duckdb-wasm/dist/duckdb-browser-mvp.worker.js"
+  }
 }

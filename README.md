@@ -104,11 +104,19 @@ server synchronization and fresh-session reopening. Physical touch is not
 verified by those tests.
 
 If opening data fails and the previous view cannot be restored, the app reports
-the failure and requires reopening the source before running SQL or saving an
-analysis or results; it does not treat the uncertain view as a valid result.
-Local desktop and emulated-phone account tests injected failures in both the
-candidate and restore operations, then reopened the source and synced results.
-The tests observed a Perspective `_setThrew is not defined` page error during
-injected failures. An existing query-restore test produced the same page error
-on an unchanged baseline as well as the candidate; its final no-page-error
-assertion remains unresolved. Physical touch remains unverified.
+that failure and requires reopening the source before running SQL or saving an
+analysis or results. The app stages the new result before the viewer can use
+it and restores the old data table if opening fails. Local desktop and
+emulated-phone account tests inject candidate-view and restoration failures,
+check that no page error occurs, and reopen the original source and sync results.
+A separate single-failure test confirms the old view and data remain usable.
+Retaining temporary results for recovery may consume extra memory until another
+source opens or the window closes; other failures and physical touch remain
+unverified.
+
+The pinned DuckDB-Wasm 1.32.0 worker is built as an app-local module with a
+hash-checked patch binding missing Emscripten exception helpers to the WASM
+exports. The earlier `_setThrew is not defined` error was reproduced on the
+unchanged worker. Local desktop and emulated-phone failed-query/restore tests
+pass with the patch without page errors. This does not prove all worker error
+or memory conditions have been tested.
