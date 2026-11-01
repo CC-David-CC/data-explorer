@@ -138,3 +138,10 @@ lets you keep them. Save the analysis to retain the chart and query together.
 Local registered-account desktop and emulated-phone checks cover the chart,
 confirmation cancellation, server sync and fresh-session project reopening.
 Actual touch and physical measurements remain unverified.
+
+**Use example query** asks before replacing unsaved SQL. If the analysis changes
+while the confirmation is open, the newer changes are kept and the student can
+try again. Local registered-account desktop and emulated-phone tests covered
+cancellation, edits during confirmation, the real 1,000 Ω result, server sync
+and reopening the analysis in a fresh browser session. Physical touch remains
+unverified.
