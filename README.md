@@ -82,3 +82,9 @@ already sent to storage may still finish after closing.
 
 Chart and viewer-setting changes made while a project save or CSV export is
 in progress remain marked unsaved. Save the analysis again to keep them.
+
+Queries must contain a single SELECT or WITH statement. A trailing semicolon
+and semicolons inside quoted strings, quoted identifiers or comments are
+accepted. Result-table creation also uses a DuckDB prepared statement. These
+checks prevent the tested multi-statement mistake; they are not a general SQL
+security sandbox.
