@@ -198,3 +198,15 @@ desktop and emulated-phone CSV and TSV tests covered headerless and named-header
 files, queries, CSV export, server sync and fresh-session project reopening.
 Automatic detection remains heuristic, physical touch and other CSV dialects
 remain unverified.
+
+Before saving results CSV, a browser worker scans the generated values for
+common formula-like prefixes (`=`, `+`, `-`, `@`, or an initial tab or line
+break). If found, the app asks before exporting the original, unchanged values;
+another spreadsheet program might interpret them as formulas. Ordinary signed
+numbers do not trigger this warning. This is a limited warning, not sanitization
+or a guarantee that a CSV is safe in every program. An inspection failure stops
+the export without replacing the destination. Local registered-account desktop
+and emulated-phone tests cover cancellation, confirmed unchanged export, a
+numeric control, injected inspection failure, server sync and project reopening.
+Physical touch, every CSV edge case and all spreadsheet applications are not
+verified.

@@ -21,6 +21,7 @@
     }
   ],
   "workers": {
-    "duckdb-worker": "node_modules/@duckdb/duckdb-wasm/dist/duckdb-browser-mvp.worker.js"
+    "duckdb-worker": "node_modules/@duckdb/duckdb-wasm/dist/duckdb-browser-mvp.worker.js",
+    "csv-safety": "workers/csv-safety.mjs"
   }
 }
