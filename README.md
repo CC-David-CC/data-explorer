@@ -19,6 +19,14 @@ The save-location controls and **Save results CSV** are under **Save locations
 and CSV export**. Results CSV contains the SQL result, not a chart or the
 viewer's additional filters and pivots.
 
+Results cannot be exported over the active source file; choose a different
+CSV filename. Other existing output files still ask before replacement. Local
+registered-account desktop and emulated-phone tests opened a source named
+`Results.csv`, ran SQL, verified that the default output could not overwrite
+it, exported to a different file, checked replacement cancellation, synced
+both files and reopened the analysis in a fresh browser. Physical touch and
+other data formats remain unverified.
+
 CSV input and results may be up to 128 MiB, but DuckDB and Perspective need
 additional working memory; large datasets may fail on memory-constrained
 devices. A local test opened and queried a CSV larger than 32 MiB; the full
