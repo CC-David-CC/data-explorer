@@ -210,3 +210,13 @@ and emulated-phone tests cover cancellation, confirmed unchanged export, a
 numeric control, injected inspection failure, server sync and project reopening.
 Physical touch, every CSV edge case and all spreadsheet applications are not
 verified.
+
+## Browser commands
+
+The signed-in desktop's in-page command registry provides `inspect`,
+`set-query`, and `run-query` for the current analysis window. Query edits use
+the inspected revision and the app's normal single-SELECT validation; running
+updates the visible viewer. Save analysis and export results through the normal
+controls. The commands do not yet return result rows or provide a remote agent
+connection. Large data and charts can still round numeric values as described in
+the app.
