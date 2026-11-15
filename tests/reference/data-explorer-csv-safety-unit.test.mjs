@@ -1,3 +1,3 @@
-import assert from 'node:assert/strict';import {hasFormulaLikeCSV as risk} from '../apps/system/data-explorer/csv-safety.mjs';const csv=s=>new TextEncoder().encode(s);
+import assert from 'node:assert/strict';import {hasFormulaLikeCSV as risk} from "../../csv-safety.mjs";const csv=s=>new TextEncoder().encode(s);
 for(const s of ['header\n=1+1\n','name\n"=SUM(1,2)"\n','id,value\n1,"  @HYPERLINK"\n','x\n"\tordinary"\n','x\n"\n+1"\n','x\n"-cmd"\n','"=header"\nok\n','x\n"'+' '.repeat(300)+'=bad"\n'])assert.equal(risk(csv(s)),true,s);
 for(const s of ['name,value\nalice,-3\nbob,+2.5e-3\n','x\n"safe, = later"\n','x\n"a""b"\n','x\n"line1\n=not-start"\n','x\n\n'])assert.equal(risk(csv(s)),false,s);console.log('PASS common formula-like CSV prefixes, quoting, multiline and numeric controls');
