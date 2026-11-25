@@ -5,6 +5,7 @@ import * as viewerModule from '@perspective-dev/viewer/dist/wasm/perspective-vie
 import '@perspective-dev/viewer-datagrid';
 import '@perspective-dev/viewer-charts';
 import {DuckDBHandler} from '@perspective-dev/client/dist/esm/virtual_servers/duckdb.js';
+import {duckDBViewerPort} from './perspective-port.mjs';
 import * as duckdb from '@duckdb/duckdb-wasm';
 import serverWasm from '@perspective-dev/server/dist/wasm/perspective-server.wasm';
 import viewerWasm from '@perspective-dev/viewer/dist/wasm/perspective-viewer.wasm';
@@ -15,7 +16,7 @@ let initialization;
 function initialize(){return initialization??=Promise.all([perspective.init_server(fetch(serverWasm)),perspectiveViewer.init_client(fetch(viewerWasm),viewerModule)]).catch(e=>{initialization=null;throw e;});}
 export function mount(host){
  const {w,desktop}=host,{make,textButton,appInput}=host.ui,{mirrorFileContext,signedInSubject}=host.storage,owner=w.launchContext?.owner||signedInSubject();w.ownerSub=owner;
- const body=make('div','window-content data-explorer'),bar=make('div','data-explorer-bar'),path=appInput('Data file path',w.launchContext?.path||'/'),resultPath=appInput('Results file path','/Results.csv'),projectPath=appInput('Analysis project path','/Analysis.codi-data.json'),sql=make('textarea','data-explorer-sql'),status=make('div','app-status'),sourceWarning=make('p','data-explorer-source-warning'),projectWarning=make('p','data-explorer-project-warning'),exampleHelp=document.createElement('details'),queryWarning=make('p','data-explorer-query-warning'),viewer=document.createElement('perspective-viewer');viewer.setAttribute('theme','Pro Light');viewer.setAttribute('aria-label','Interactive data grid and charts');sourceWarning.hidden=true;sourceWarning.setAttribute('role','status');projectWarning.hidden=true;projectWarning.setAttribute('role','status');exampleHelp.hidden=true;queryWarning.hidden=true;queryWarning.setAttribute('role','status');sql.setAttribute('aria-label','SQL query');sql.value='SELECT * FROM data';let commandRevision=0,disposed=false,busy=false,choosing=false,choosingFolder=false,choiceRevision=0,savingView=false,db,connection,client,duckWorker,viewerLoaded=false,needsReopen=false,queryNumber=0,lastResult=null,lastStatement='',setupTask=null,sourceSerial=0,projectSerial=0,csvSafetyCancel=null,unsubscribe=()=>{};const state=w.dataExplorer??={dirty:false,edits:0,sourcePath:null,sourceSHA:null,projectPath:null,projectVersion:null};
+ const body=make('div','window-content data-explorer'),bar=make('div','data-explorer-bar'),path=appInput('Data file path',w.launchContext?.path||'/'),resultPath=appInput('Results file path','/Results.csv'),projectPath=appInput('Analysis project path','/Analysis.codi-data.json'),sql=make('textarea','data-explorer-sql'),status=make('div','app-status'),sourceWarning=make('p','data-explorer-source-warning'),projectWarning=make('p','data-explorer-project-warning'),exampleHelp=document.createElement('details'),queryWarning=make('p','data-explorer-query-warning'),viewer=document.createElement('perspective-viewer');viewer.setAttribute('theme','Pro Light');viewer.setAttribute('aria-label','Interactive data grid and charts');sourceWarning.hidden=true;sourceWarning.setAttribute('role','status');projectWarning.hidden=true;projectWarning.setAttribute('role','status');exampleHelp.hidden=true;queryWarning.hidden=true;queryWarning.setAttribute('role','status');sql.setAttribute('aria-label','SQL query');sql.value='SELECT * FROM data';let commandRevision=0,disposed=false,busy=false,choosing=false,choosingFolder=false,choiceRevision=0,savingView=false,db,connection,client,viewerPort,duckWorker,viewerLoaded=false,needsReopen=false,queryNumber=0,lastResult=null,lastStatement='',setupTask=null,sourceSerial=0,projectSerial=0,csvSafetyCancel=null,unsubscribe=()=>{};const state=w.dataExplorer??={dirty:false,edits:0,sourcePath:null,sourceSHA:null,projectPath:null,projectVersion:null};
  let quiesced=false,priorInert=false;const lifecycle=createDataExplorerLifecycle({readState:()=>({dirty:!!state.dirty,pending:!!(busy||choosing||choosingFolder),quiesced}),pause(){priorInert=body.inert;quiesced=true;body.inert=true;},resume(){quiesced=false;body.inert=priorInert;}});
  const valid=()=>!disposed&&!quiesced&&!host.signal.aborted&&body.isConnected&&signedInSubject()===owner;const tell=s=>{if(valid())status.textContent=s;};const changed=()=>{if(!disposed&&!host.signal.aborted&&body.isConnected&&signedInSubject()===owner){state.dirty=true;state.edits++;commandRevision++;lifecycle.changed();}};function queryMatches(){try{return !!lastResult&&singleSelect(sql.value)===lastStatement;}catch{return false;}}function showQueryState(){queryWarning.hidden=!lastResult||queryMatches();queryWarning.textContent=queryWarning.hidden?'':'The displayed results are from an earlier query. Run SQL to update them before saving results.';}sql.addEventListener('input',()=>{changed();showQueryState();});viewer.addEventListener('perspective-config-update',()=>{if((!busy||savingView)&&viewerLoaded)changed();});
  let recoveryTarget=null;const retry=make('button','data-explorer-retry','Retry saved analysis or data');retry.type='button';retry.hidden=true;retry.addEventListener('click',()=>{if(recoveryTarget)void open(recoveryTarget,false,true);});
@@ -25,8 +26,39 @@ export function mount(host){
  function pendingSave(){const wasDirty=state.dirty,revision=state.edits;let committed=false;state.dirty=true;return {committed(){committed=true;},finish(){if(!committed&&state.edits===revision)state.dirty=wasDirty;}};}
  async function checkSource(c){if(!valid()||!c.valid()||!state.sourcePath)return;const token=++sourceSerial,p=state.sourcePath,sha=state.sourceSHA;let message='';try{const file=await c.files.stat(p);if(file.status==='conflict')message='The source '+sourceLabel(p)+' has conflicting copies in Files. This analysis still uses the version loaded earlier.';else if(file.sha256!==sha)message='The source '+sourceLabel(p)+' changed in My files. This analysis still uses the version loaded earlier; reopen the source to update it.';}catch{message='The source '+sourceLabel(p)+' is unavailable in My files. This analysis still uses the version loaded earlier.';}if(!valid()||!c.valid()||token!==sourceSerial||state.sourcePath!==p||state.sourceSHA!==sha)return;sourceWarning.textContent=message;sourceWarning.hidden=!message;}
  async function checkProject(c){const token=++projectSerial,p=state.projectPath,version=state.projectVersion;if(!valid()||!c.valid())return;if(!p||!version){projectWarning.textContent='';projectWarning.hidden=true;return;}let message='';try{const file=await c.files.stat(p);if(file.status==='conflict')message='The saved analysis has conflicting copies. Resolve them in Files; your current analysis remains open.';else if(file.version!==version)message='The saved analysis changed in My files. Your current analysis remains open; save a copy or reopen it.';}catch(e){message=e.message==='File not found.'?'The saved analysis is no longer in My files. Your current analysis remains open; save a copy.':'Could not check the saved analysis. Your current analysis remains open.';}if(!valid()||!c.valid()||token!==projectSerial||state.projectPath!==p||state.projectVersion!==version)return;projectWarning.textContent=message;projectWarning.hidden=!message;}
- async function setupInner(){await initialize();if(!valid())return;duckWorker=new Worker(new URL('./workers/duckdb-worker.mjs',import.meta.url),{type:'module'});db=new duckdb.AsyncDuckDB(new duckdb.VoidLogger(),duckWorker);await db.instantiate(duckWasm);connection=await db.connect();await connection.query('SET default_null_order=NULLS_FIRST_ON_ASC_LAST_ON_DESC');await connection.query('SET autoinstall_known_extensions=false');await connection.query('SET autoload_known_extensions=false');client=await perspective.worker(await createMessageHandler(new DuckDBHandler(connection)));if(!valid())return;await viewer.load(client);viewerLoaded=true;}
- async function cleanSetup(){try{if(viewerLoaded)await viewer.delete();}catch{}viewerLoaded=false;try{await client?.terminate();}catch{}client=null;try{await connection?.close();}catch{}connection=null;try{await db?.terminate();}catch{}db=null;duckWorker?.terminate();duckWorker=null;}
+ async function setupInner() {
+  await initialize();
+  if (!valid()) return;
+  duckWorker = new Worker(new URL('./workers/duckdb-worker.mjs', import.meta.url), {type: 'module'});
+  db = new duckdb.AsyncDuckDB(new duckdb.VoidLogger(), duckWorker);
+  await db.instantiate(duckWasm);
+  connection = await db.connect();
+  await connection.query('SET default_null_order=NULLS_FIRST_ON_ASC_LAST_ON_DESC');
+  await connection.query('SET autoinstall_known_extensions=false');
+  await connection.query('SET autoload_known_extensions=false');
+  viewerPort = duckDBViewerPort(await createMessageHandler(new DuckDBHandler(connection)));
+  client = await perspective.worker(Promise.resolve(viewerPort.client));
+  if (!valid()) return;
+  await viewer.load(client);
+  viewerLoaded = true;
+ }
+
+ async function cleanSetup() {
+  try {
+   if (viewerLoaded) await viewer.delete();
+  } catch {}
+  viewerLoaded = false;
+  try { await client?.terminate(); } catch {}
+  client = null;
+  viewerPort?.close();
+  viewerPort = null;
+  try { await connection?.close(); } catch {}
+  connection = null;
+  try { await db?.terminate(); } catch {}
+  db = null;
+  duckWorker?.terminate();
+  duckWorker = null;
+ }
  function setup(){return setupTask??=setupInner().catch(async error=>{await cleanSetup();setupTask=null;throw error;});}
  const statement=singleSelect,retiredResults=new Set();
  async function createResult(name,queryText){const prepared=await connection.prepare('CREATE TABLE '+name+' AS ('+statement(queryText)+'\n)');try{await prepared.query();}finally{await prepared.close();}}
