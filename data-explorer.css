@@ -1,11 +1,93 @@
-.data-explorer{display:flex;flex-direction:column;gap:.5rem;min-height:0;height:100%;padding:.5rem}.data-explorer-bar{display:flex;gap:.35rem;flex-wrap:wrap}.data-explorer-bar input{flex:1;min-width:10rem}.data-explorer-sql{min-height:3.4rem;resize:vertical;width:100%;font:inherit}.data-explorer perspective-viewer{display:block;flex:1;min-height:12rem;width:100%}
+.data-explorer {
+  --analysis-raised: var(--desktop-raised, #f3f5f7);
+  --analysis-border: var(--desktop-border, #b8c2cd);
+  --analysis-muted: var(--desktop-muted, #465465);
+  display: flex;
+  flex-direction: column;
+  gap: .5rem;
+  min-height: 0;
+  height: 100%;
+  padding: .5rem;
+  overflow: auto;
+}
 
-.data-explorer-save{display:flex;gap:.35rem;flex-wrap:wrap}.data-explorer-save input{flex:1;min-width:10rem}.data-explorer-bar button,.data-explorer-save button{min-height:44px;padding:.45rem .7rem}
+.data-explorer-bar, .data-explorer-save, .data-explorer-query {
+  display: flex;
+  align-items: flex-start;
+  gap: .35rem;
+  flex-wrap: wrap;
+}
 
-.data-explorer-options{background:white;border:1px solid #d9dfe5;padding:.4rem}.data-explorer-options summary{cursor:pointer;min-height:36px;display:list-item}.data-explorer-options .data-explorer-save{margin:.4rem 0}
-.data-explorer-note,.data-explorer-header-hint{margin:0;font-size:12px;line-height:1.35;color:#526078}
-.data-explorer-import-mode{display:flex;align-items:center;gap:.4rem;min-height:36px;font-size:13px}.data-explorer-precision-notice{margin:0;padding:6px 8px;border-left:4px solid #a36300;background:#fff4d6;color:#513400;font-size:12px;line-height:1.35}
-.data-explorer-source-warning,.data-explorer-project-warning{margin:0;padding:8px;border-left:4px solid #a36300;background:#fff4d6;color:#513400}
+.data-explorer-bar input, .data-explorer-save input {
+  flex: 1 1 10rem;
+  min-width: 0;
+  box-sizing: border-box;
+  min-height: 44px;
+}
 
-.data-explorer-query-warning{margin:0;padding:8px;border-left:4px solid #a36300;background:#fff4d6;color:#513400}
-.data-explorer-header-mode{display:flex;align-items:center;gap:.4rem;font-size:13px}.data-explorer-header-mode select{min-height:44px;max-width:100%}
+.data-explorer button { min-height: 44px; padding: .45rem .7rem; }
+
+.data-explorer-sql {
+  flex: 1;
+  min-height: 3.4rem;
+  min-width: 0;
+  resize: vertical;
+  font: inherit;
+}
+
+.data-explorer perspective-viewer {
+  display: block;
+  flex: 1;
+  min-height: 12rem;
+  width: 100%;
+}
+
+.data-explorer-options, .data-explorer > .app-status {
+  background: var(--analysis-raised);
+  border: 1px solid var(--analysis-border);
+  padding: .4rem;
+}
+
+.data-explorer > .app-status { margin: 0; }
+
+.data-explorer-options summary {
+  cursor: pointer;
+  min-height: 36px;
+  line-height: 36px;
+}
+
+.data-explorer-options .data-explorer-save { margin: .4rem 0; }
+
+.data-explorer-note, .data-explorer-header-hint {
+  margin: 0;
+  font-size: 12px;
+  line-height: 1.35;
+  color: var(--analysis-muted);
+}
+
+.data-explorer-import-mode, .data-explorer-header-mode {
+  display: flex;
+  align-items: center;
+  gap: .4rem;
+  min-height: 36px;
+  font-size: 13px;
+}
+
+.data-explorer-header-mode select { min-height: 44px; max-width: 100%; }
+
+.data-explorer-precision-notice,
+.data-explorer-source-warning,
+.data-explorer-project-warning,
+.data-explorer-query-warning {
+  margin: 0;
+  padding: 8px;
+  border-left: 4px solid #a36300;
+  background: #fff4d6;
+  color: #513400;
+}
+
+.data-explorer-precision-notice { font-size: 12px; line-height: 1.35; }
+
+@media (max-width: 720px) {
+  .data-explorer-bar input, .data-explorer-save input { flex-basis: 100%; }
+}
