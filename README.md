@@ -2,11 +2,12 @@
 
 Perspective supplies the interactive data grid, grouping/pivot controls and
 charts. Its DuckDB virtual-server adapter runs SQL against DuckDB-Wasm in the
-browser; there is no separate database server. Choose **Open from My files**, or
-enter a CSV or TSV path and select Open path. TSV files use tab delimiters; quoted fields may contain tabs or commas. Run a SELECT query to show its results,
-then use the viewer settings to filter, group, pivot or choose a chart. Choose
-a save folder and select **Save results CSV** to save the SQL result to My files;
-the result is written to browser storage first and then synchronized.
+browser. Choose **Open from My files** or use **Source options** to enter a CSV
+or TSV path. In Files, use **Open With → Data Explorer** for a CSV. TSV files
+use tab delimiters and quoted fields may contain tabs or commas. Run a SELECT
+query to show its results, then open **Viewer settings** to filter, group,
+pivot or choose a chart. **Save results CSV** writes the SQL result to My files
+and synchronizes it to the account.
 
 By default, DuckDB infers column types for numerical analysis. Inference or the
 viewer and charts can round large integers and precise decimals; do not use the
@@ -38,8 +39,9 @@ before using the current source file; if the source is missing, restore it in My
 before opening the project. Unsaved SQL and viewer-setting changes prompt before
 closing or opening another file. Run the current SQL before saving the project. Save checks the source hash and existing destination version using My files metadata without rereading their contents.
 The save-location controls and **Save results CSV** are under **Save locations
-and CSV export**. Results CSV contains the SQL result, not a chart or the
-viewer's additional filters and pivots.
+and CSV export**. A path such as `Documents/Results` gains `.csv` for results
+or `.codi-data.json` for an analysis. Results CSV contains the SQL result.
+The analysis file stores the viewer's filter and pivot settings.
 
 Results cannot be exported over the active source file; choose a different
 CSV filename. Other existing output files still ask before replacement. Local
@@ -63,7 +65,7 @@ disposal in the browser test.
 The two exact-hash build patches prevent dynamic imports from outside the
 reviewed app bundle. Viewer initialization explicitly supplies its bundled WASM
 module. Chart fallback that would dynamically import a blob is disabled; the
-worker graphics path is used. Run `npm ci --prefix apps/system/data-explorer
+worker graphics path is used. Run `npm ci --prefix apps/data-explorer
 --ignore-scripts` before building. Third-party licenses are packaged with the
 built app; dependencies and generated assets are not committed.
 
