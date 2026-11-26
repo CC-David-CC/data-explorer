@@ -10,8 +10,6 @@ import * as duckdb from '@duckdb/duckdb-wasm';
 import serverWasm from '@perspective-dev/server/dist/wasm/perspective-server.wasm';
 import viewerWasm from '@perspective-dev/viewer/dist/wasm/perspective-viewer.wasm';
 import duckWasm from '@duckdb/duckdb-wasm/dist/duckdb-mvp.wasm';
-import '@perspective-dev/viewer/themes/pro.css';
-import '@perspective-dev/viewer/themes/pro-dark.css';
 import './data-explorer.css';
 import {singleSelect} from './sql-statement.mjs';
 function storagePath(context, value) {
@@ -133,7 +131,11 @@ export function mount(host){
   textButton('Files',()=>desktop.launch('files')));
  sourceOptions.append(make('summary','','Source options'),sourceBar,importMode,headerLabel,headerHint,precisionNotice,exampleHelp);
 
- bar.append(textButton('Open from My files',async()=>{if(busy||choosing||choosingFolder||!valid())return;choosing=true;lifecycle.changed();const token=++choiceRevision;try{const selected=await host.storage.pickFile({extensions:['.csv','.tsv','.codi-data.json'],signal:host.signal});if(selected&&valid()&&token===choiceRevision)await open(selected);}catch(e){if(valid()&&token===choiceRevision)tell('Could not choose a file: '+e.message);}finally{choosing=false;lifecycle.changed();}}),textButton('Save analysis',saveProject));
+ bar.append(textButton('Open from My files',async()=>{if(busy||choosing||choosingFolder||!valid())return;choosing=true;lifecycle.changed();const token=++choiceRevision;try{const selected=await host.storage.pickFile({extensions:['.csv','.tsv','.codi-data.json'],signal:host.signal});if(selected&&valid()&&token===choiceRevision)await open(selected);}catch(e){if(valid()&&token===choiceRevision)tell('Could not choose a file: '+e.message);}finally{choosing=false;lifecycle.changed();}}),textButton('Save analysis',saveProject),textButton('Viewer settings',()=>{
+  if(busy||!valid())return;
+  if(!lastResult){tell('Open data before changing viewer settings.');return;}
+  void viewer.toggleConfig().catch(e=>tell('Could not open viewer settings: '+e.message));
+ }));
  const queryBar=make('div','data-explorer-query');
  queryBar.append(sql,textButton('Run SQL',()=>{if(!busy){busy=true;lifecycle.changed();query().finally(()=>{busy=false;lifecycle.changed();});}}));
  const saveOptions=document.createElement('details');

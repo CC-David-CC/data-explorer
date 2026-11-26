@@ -91,3 +91,31 @@
 @media (max-width: 720px) {
   .data-explorer-bar input, .data-explorer-save input { flex-basis: 100%; }
 }
+
+.data-explorer perspective-viewer,
+.data-explorer perspective-viewer[theme="Pro Light"] {
+  --psp-theme-name: "Pro Light";
+  --psp--color: #16202c;
+  --psp--background-color: #fff;
+  --psp-inactive--color: #4d5968;
+  --psp-inactive--border-color: #b8c2cd;
+}
+
+.data-explorer perspective-viewer[theme="Pro Dark"] {
+  --psp-theme-name: "Pro Dark";
+  --psp--color: var(--desktop-text, #f3f6f8);
+  --psp--background-color: var(--desktop-surface, #252a30);
+  --psp-inactive--color: var(--analysis-muted);
+  --psp-inactive--border-color: var(--analysis-border);
+  --psp-active--color: #84baff;
+  --psp-datagrid--pos-cell--color: #a3d5ff;
+  --psp-datagrid--neg-cell--color: #ff9e94;
+  --psp-charts--axis-ticks--color: var(--psp--color);
+  --psp-charts--legend--color: var(--psp--color);
+  --psp-charts--tooltip--color: var(--psp--color);
+  --psp-charts--tooltip--background: var(--analysis-raised);
+  --psp-charts--axis-lines--color: var(--analysis-border);
+  --psp-charts--gridline--color: var(--analysis-border);
+  color: var(--psp--color);
+  background: var(--psp--background-color);
+}
